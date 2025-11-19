@@ -1,9 +1,9 @@
 import { LinkItem, ChartDataPoint, User } from '../types';
 
 const users: User[] = [
-  { id: 'u1', name: 'Alex River', avatar: 'https://picsum.photos/seed/u1/32/32' },
-  { id: 'u2', name: 'Jordan Lee', avatar: 'https://picsum.photos/seed/u2/32/32' },
-  { id: 'u3', name: 'Casey Smith', avatar: 'https://picsum.photos/seed/u3/32/32' },
+  { id: 'u1', name: 'Alex River', avatar: 'https://picsum.photos/seed/u1/32/32', isPro: true },
+  { id: 'u2', name: 'Jordan Lee', avatar: 'https://picsum.photos/seed/u2/32/32', isPro: false },
+  { id: 'u3', name: 'Casey Smith', avatar: 'https://picsum.photos/seed/u3/32/32', isPro: true },
 ];
 
 export const MOCK_LINKS: LinkItem[] = [

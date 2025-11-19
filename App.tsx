@@ -34,7 +34,6 @@ function App() {
   // Resizable Sidebar State
   const [sidebarWidth, setSidebarWidth] = useState(340);
   const [isResizing, setIsResizing] = useState(false);
-  const sidebarRef = useRef<HTMLDivElement>(null);
 
   // Theme State
   const [theme, setTheme] = useState<'light' | 'dark'>(() => {
@@ -404,4 +403,105 @@ function App() {
                    {!user.isPro && <Lock size={12} className="text-zinc-400" />}
                  </div>
                  
-                 <
+                 <div className={!user.isPro ? "blur-sm select-none opacity-50" : ""}>
+                    <AnalyticsChart data={chartData} isDarkMode={theme === 'dark'} />
+                 </div>
+
+                 {!user.isPro && (
+                    <div className="absolute inset-0 flex flex-col items-center justify-center bg-white/10 dark:bg-black/10 z-10">
+                        <Button size="sm" variant="secondary" onClick={() => setIsSubscriptionOpen(true)}>
+                            Unlock Analytics
+                        </Button>
+                    </div>
+                 )}
+              </div>
+
+              {/* Stat Cards */}
+              <div className="grid grid-cols-2 gap-3">
+                <div className="bg-white dark:bg-zinc-900 p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 shadow-sm">
+                  <div className="flex items-center gap-2 text-zinc-500 dark:text-zinc-400 mb-2">
+                    <LinkIcon size={16} />
+                    <span className="text-xs font-bold uppercase tracking-wider">Total Links</span>
+                  </div>
+                  <span className="text-2xl font-bold text-zinc-900 dark:text-zinc-100">{totalLinks}</span>
+                </div>
+                <div className="bg-white dark:bg-zinc-900 p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 shadow-sm">
+                  <div className="flex items-center gap-2 text-zinc-500 dark:text-zinc-400 mb-2">
+                    <Activity size={16} />
+                    <span className="text-xs font-bold uppercase tracking-wider">Total Votes</span>
+                  </div>
+                  <span className="text-2xl font-bold text-zinc-900 dark:text-zinc-100">{totalVotes}</span>
+                </div>
+              </div>
+
+              {/* User Profile Card */}
+              <div className="mt-6 bg-gradient-to-br from-violet-600 to-indigo-700 rounded-xl p-5 text-white shadow-[0_0_25px_rgba(124,58,237,0.4)] relative overflow-hidden">
+                 {/* Background decoration */}
+                 <div className="absolute top-0 right-0 -mt-4 -mr-4 w-24 h-24 bg-white/10 rounded-full blur-xl"></div>
+                 
+                 <div className="flex items-center gap-2 mb-4 text-violet-100 text-xs font-bold uppercase tracking-wider relative z-10">
+                    <UserIcon size={14} />
+                    My Profile
+                 </div>
+                 
+                 <div className="flex items-center gap-4 relative z-10">
+                    <div className="relative">
+                        <img src={user.avatar} alt={user.name} className="w-12 h-12 rounded-full border-2 border-violet-400/50" />
+                        <div className="absolute bottom-0 right-0 w-3 h-3 bg-emerald-400 rounded-full border-2 border-indigo-700"></div>
+                    </div>
+                    <div>
+                        <div className="font-bold text-lg leading-tight">{user.name}</div>
+                        <div className="text-violet-200 text-xs">Online</div>
+                    </div>
+                 </div>
+
+                 <div className="mt-4 pt-4 border-t border-white/10 flex justify-between text-center relative z-10">
+                    <div>
+                        <div className="text-lg font-bold">{links.filter(l => l.author.id === user.id).length}</div>
+                        <div className="text-[10px] text-violet-200 uppercase tracking-wider">Posts</div>
+                    </div>
+                    <div>
+                        <div className="text-lg font-bold">0</div>
+                        <div className="text-[10px] text-violet-200 uppercase tracking-wider">Followers</div>
+                    </div>
+                    <div>
+                        <div className="text-lg font-bold">0</div>
+                        <div className="text-[10px] text-violet-200 uppercase tracking-wider">Following</div>
+                    </div>
+                 </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+      </main>
+
+      {/* Modals */}
+      <LinkDetailModal 
+        link={selectedLink} 
+        isOpen={isModalOpen} 
+        onClose={() => setIsModalOpen(false)} 
+        onAddComment={handleAddComment}
+        onVote={handleVote}
+      />
+      
+      <SettingsModal
+        isOpen={isSettingsOpen}
+        onClose={() => setIsSettingsOpen(false)}
+        theme={theme}
+        toggleTheme={toggleTheme}
+        user={user}
+        onUpdateUser={handleUpdateUser}
+      />
+
+      <SubscriptionModal
+        isOpen={isSubscriptionOpen}
+        onClose={() => setIsSubscriptionOpen(false)}
+        onUpgrade={handleUpgrade}
+      />
+    </div>
+  );
+}
+
+export default App;
